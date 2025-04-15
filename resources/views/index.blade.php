@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@push('styles')
+@section('styles')
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -65,7 +65,7 @@
             }
         }
     </style>
-@endpush
+@endsection
 
 @section('content')
     <div class="container">

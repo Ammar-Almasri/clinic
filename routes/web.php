@@ -37,3 +37,15 @@ Route::get('/clinic/appointments', function(){
 Route::view('clinic/patients/create','patients_form')->name('patients.create');
 
 Route::view('clinic/appointments/create/{patient}','appointments_form')->name('appointments.create');
+
+Route::post('/clinic/patients',function(){
+
+    $patient = 1;
+    return redirect()->route('appointments.create', ['patient' => $patient]);
+})->name('patients.store');
+
+Route::post('/clinic/appointments',function(){
+
+    $patient = 1;
+    return 'mashkoor';
+})->name('appointments.store');
