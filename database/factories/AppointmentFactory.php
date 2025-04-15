@@ -17,6 +17,7 @@ class AppointmentFactory extends Factory
             'patient_id' => Patient::inRandomOrder()->first()->id, // Select a random patient
             'doctor_id' => Doctor::inRandomOrder()->first()->id,   // Select a random doctor
             'appointment_date' => $this->faker->dateTimeThisYear(), // Random date for the appointment
+            'reason' => $this->faker->sentence()
         ];
     }
 }
