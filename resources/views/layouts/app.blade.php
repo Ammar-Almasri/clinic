@@ -11,7 +11,7 @@
     <!-- ✅ Custom Page Styles -->
     @yield('styles')
 </head>
-<body class="bg-light">
+<body>
     <h1 class="text-center my-4">@yield('title')</h1>
     <div class="container">
         @yield('content')

@@ -2,19 +2,20 @@
 
 @section('content')
     <div class="card shadow-sm p-4">
-        <h2 class="text-center text-primary mb-4">Available Doctors</h2>
+        <h2 class="text-center text-primary mb-4">Appointments</h2>
 
-        @foreach ($doctors as $doctor)
-            <div class="doctor-card mb-4 p-3">
-                <h4 class="mb-1">{{ $doctor->first_name }} {{ $doctor->last_name }}</h4>
-                <p class="mb-1"><strong>Speciality:</strong> {{ $doctor->speciality }}</p>
-                <p class="mb-1"><strong>Email:</strong> {{ $doctor->email }}</p>
-                <p class="mb-0"><strong>Phone:</strong> {{ $doctor->phone }}</p>
+        @foreach ($appointments as $appointment)
+            <div class="appointment-card mb-4 p-3">
+                <h4 class="mb-1">Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</h4>
+                <p class="mb-1"><strong>Doctor:</strong> {{ $appointment->doctor->first_name }} {{ $appointment->doctor->last_name }}</p>
+                <p class="mb-1"><strong>Speciality:</strong> {{ $appointment->doctor->speciality }}</p>
+                <p class="mb-1"><strong>Appointment Date:</strong> {{ $appointment->appointment_date->format('Y-m-d H:i') }}</p>
+                <p class="mb-0"><strong>Reason:</strong> {{ $appointment->reason }}</p>
             </div>
         @endforeach
 
         <div class="mt-4">
-            {{ $doctors->links('pagination::bootstrap-4') }}
+            {{ $appointments->links('pagination::bootstrap-4') }}
         </div>
 
         <div class="d-grid gap-2">
@@ -46,7 +47,6 @@
             border-color: #545b62;
         }
 
-
         .pagination .page-item.disabled .page-link,
         .pagination .page-item.active .page-link {
             background-color: #007bff;
@@ -69,14 +69,13 @@
             padding: 8px 16px; /* Adjust padding for the arrows */
         }
 
-
-        .doctor-card {
+        .appointment-card {
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
             border-radius: 10px;
         }
 
-        .doctor-card:hover {
+        .appointment-card:hover {
             background-color: #e9f5ff;
             border-color: #007bff;
         }
