@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\PatientRequest;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
@@ -44,14 +46,14 @@ Route::view('clinic/patients/create','patients_form')->name('patients.create');
 
 Route::view('clinic/appointments/create/{patient}','appointments_form')->name('appointments.create');
 
-Route::post('/clinic/patients',function(){
+Route::post('/clinic/patients',function(PatientRequest $req){
 
-    $patient = new Patient;
-    $patient = 1;
+    $patient = Patient::find(4);
+
     return redirect()->route('appointments.create', ['patient' => $patient]);
 })->name('patients.store');
 
-Route::post('/clinic/appointments',function(){
+Route::post('/clinic/appointments',function(AppointmentRequest $req){
 
     $patient = 1;
     return 'mashkoor';
