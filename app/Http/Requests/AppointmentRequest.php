@@ -22,8 +22,8 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'doctor_name' => 'required|string|max:255',
-            'patient_name' => 'required|string|max:255',
+            'doctor_id' => 'required|exists:doctors,id|integer',
+            'patient_id' => 'required|exists:patients,id|integer',
             'appointment_date' => 'required|date',
             'reason' => 'nullable|string|max:500',
         ];

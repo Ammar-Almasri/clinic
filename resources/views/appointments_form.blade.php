@@ -1,25 +1,28 @@
 @extends('layouts.app')
-
+{{print_r($errors->all())}}
 @section('content')
     <div class="card shadow-lg border-0 rounded-lg">
         <div class="card-body">
             <h2 class="text-center text-primary mb-4">Book Appointment</h2>
 
-            <form action="{{ route('appointments.store') }}" method="POST">
+            <form action="{{ route('appointments.store', ['patient' => $patient]) }}" method="POST">
                 @csrf
-
+                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
                 <div class="mb-4">
                     <label for="doctor_id" class="form-label">Doctor</label>
                     <select name="doctor_id" id="doctor_id" class="form-control form-control-lg" required>
                         <option value="">-- Select Doctor --</option>
-                        {{-- Example, replace with dynamic doctor list --}}
-                        <option value="1">Dr. Ahmed (ENT)</option>
-                        <option value="2">Dr. Salma (Dermatology)</option>
+                        @foreach ($doctors as $doctor)
+                            <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
+                                Dr. {{ $doctor->first_name }} ({{ $doctor->speciality }})
+                            </option>
+                        @endforeach
                     </select>
                     @error('doctor_id')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
                 </div>
+
 
                 <div class="mb-4">
                     <label for="appointment_date" class="form-label">Appointment Date</label>

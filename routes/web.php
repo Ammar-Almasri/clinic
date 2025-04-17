@@ -44,20 +44,25 @@ Route::get('/clinic/appointments', function(){
 
 Route::view('clinic/patients/create','patients_form')->name('patients.create');
 
-Route::view('clinic/appointments/create/{patient}','appointments_form')->name('appointments.create');
+Route::get('clinic/appointments/create/{patient}',function(Patient $patient){
+
+    return view('appointments_form',['doctors'=>Doctor::all(),'patient'=>$patient]);
+})->name('appointments.create');
 
 Route::post('/clinic/patients',function(PatientRequest $req){
 
-    $patient = Patient::find(4);
+    $data = $req->validated();
+    $patient = Patient::create($data);
 
     return redirect()->route('appointments.create', ['patient' => $patient]);
 })->name('patients.store');
 
 Route::post('/clinic/appointments',function(AppointmentRequest $req){
 
-    $patient = 1;
-    return 'mashkoor';
+    $data = $req->validated();
+    Appointment::create($data);
 
+    return redirect()->route('appointments.index');
 })->name('appointments.store');
 
 

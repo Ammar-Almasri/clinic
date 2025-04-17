@@ -10,7 +10,7 @@
 
                 <div class="mb-4">
                     <label for="first_name" class="form-label">First Name</label>
-                    <input type="text" name="first_name" id="first_name" class="form-control form-control-lg" placeholder="Enter first name" required>
+                    <input type="text" name="first_name" id="first_name" class="form-control form-control-lg" placeholder="Enter first name" required value="{{ old('first_name') }}">
                     @error('first_name')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
@@ -18,7 +18,7 @@
 
                 <div class="mb-4">
                     <label for="last_name" class="form-label">Last Name</label>
-                    <input type="text" name="last_name" id="last_name" class="form-control form-control-lg" placeholder="Enter last name" required>
+                    <input type="text" name="last_name" id="last_name" class="form-control form-control-lg" placeholder="Enter last name" required value="{{ old('last_name') }}">
                     @error('last_name')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
@@ -26,7 +26,7 @@
 
                 <div class="mb-4">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" id="email" class="form-control form-control-lg" placeholder="Enter email" required>
+                    <input type="email" name="email" id="email" class="form-control form-control-lg" placeholder="Enter email" required value="{{ old('email') }}">
                     @error('email')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
@@ -34,7 +34,7 @@
 
                 <div class="mb-4">
                     <label for="phone" class="form-label">Phone</label>
-                    <input type="text" name="phone" id="phone" class="form-control form-control-lg" placeholder="Enter phone number" required>
+                    <input type="text" name="phone" id="phone" class="form-control form-control-lg" placeholder="Enter phone number" required value="{{ old('phone') }}">
                     @error('phone')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
