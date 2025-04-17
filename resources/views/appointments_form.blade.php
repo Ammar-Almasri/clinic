@@ -5,7 +5,7 @@
         <div class="card-body">
             <h2 class="text-center text-primary mb-4">Book Appointment</h2>
 
-            <form action="{{ route('appointments.store', ['patient' => $patient]) }}" method="POST">
+            <form action="{{ route('appointments.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="patient_id" value="{{ $patient->id }}">
                 <div class="mb-4">
