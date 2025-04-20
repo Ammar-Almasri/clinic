@@ -7,12 +7,19 @@
             <h2 class="text-center text-primary mb-4">Patient Details</h2>
 
             @foreach ($patients as $patient)
-                <div class="patient-card mb-4 p-3">
-                    <h4 class="mb-1">{{ $patient->first_name }} {{ $patient->last_name }}</h4>
-                    <p class="mb-1"><strong>Email:</strong> {{ $patient->email }}</p>
-                    <p class="mb-1"><strong>Phone:</strong> {{ $patient->phone }}</p>
+                <div class="patient-card mb-4 p-3 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">{{ $patient->first_name }} {{ $patient->last_name }}</h4>
+                        <p class="mb-1"><strong>Email:</strong> {{ $patient->email }}</p>
+                        <p class="mb-1"><strong>Phone:</strong> {{ $patient->phone }}</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-primary ms-2">Edit</a>
+                    </div>
                 </div>
             @endforeach
+
+
 
             <div class="mt-4">
                 {{ $patients->links('pagination::bootstrap-4') }}

@@ -23,9 +23,9 @@ class PatientRequest extends FormRequest
     {
         return [
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:patients,email|max:255',
-            'phone' => 'required|string|max:20',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'unique:patients,email,' . ($this->patient->id ?? null),
+            'phone'      => 'required|string|max:20',
         ];
     }
 

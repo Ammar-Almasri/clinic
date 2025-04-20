@@ -70,10 +70,23 @@ Route::get('/clinic/appointments/edit/{appointment}', function(Appointment $appo
     return view('appointments_form',['doctors'=>Doctor::all(),'appointment' => $appointment]);
 })->name('appointments.edit');
 
-Route::put('/clinic/appointments',function(AppointmentRequest $req){
+Route::put('/clinic/appointments/{appointment}',function(AppointmentRequest $req, Appointment $appointment){
 
     $data = $req->validated();
-    Appointment::create($data);
+    $appointment->update($data);
 
     return redirect()->route('appointments.index');
 })->name('appointments.update');
+
+Route::get('clinic/patients/edit/{patient}',function(Patient $patient){
+
+    return view('patients_form',['patient'=>$patient]);
+})->name('patients.edit');
+
+Route::put('/clinic/patients/{patient}',function(PatientRequest $req, Patient $patient){
+
+    $data = $req->validated();
+    $patient->update($data);
+
+    return redirect()->route('patients.index');
+})->name('patients.update');
