@@ -8,7 +8,14 @@
             <div class="appointment-card mb-4 p-3 border rounded">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h4 class="mb-0">Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</h4>
-                    <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <div class="d-flex">
+                        <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
                 <p class="mb-1"><strong>Doctor:</strong> {{ $appointment->doctor->first_name }} {{ $appointment->doctor->last_name }}</p>
                 <p class="mb-1"><strong>Speciality:</strong> {{ $appointment->doctor->speciality }}</p>

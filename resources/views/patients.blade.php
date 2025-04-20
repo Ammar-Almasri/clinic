@@ -15,6 +15,11 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-primary ms-2">Edit</a>
+                        <form action="{{ route('patients.destroy', $patient) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this patient?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger ms-2">Delete</button>
+                        </form>
                     </div>
                 </div>
             @endforeach

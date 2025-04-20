@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\DoctorRequest;
 use App\Http\Requests\PatientRequest;
 use App\Models\Appointment;
 use App\Models\Doctor;
@@ -90,3 +91,44 @@ Route::put('/clinic/patients/{patient}',function(PatientRequest $req, Patient $p
 
     return redirect()->route('patients.index');
 })->name('patients.update');
+
+Route::delete('clinic/appointments/{appointment}', function (Appointment $appointment) {
+
+    $appointment->delete();
+    return redirect()->route('appointments.index');
+
+})->name('appointments.destroy');
+
+Route::delete('clinic/patients/{patient}', function (Patient $patient) {
+
+    $patient->delete();
+    return redirect()->route('patients.index');
+
+})->name('patients.destroy');
+
+Route::get('clinic/doctors/edit/{doctor}', function(Doctor $doctor){
+    return view('doctors_form',['doctor'=>$doctor]);
+})->name('doctors.edit');
+
+Route::put('clinic/doctors/{doctor}',function(DoctorRequest $req, Doctor $doctor){
+
+    $data = $req->validated();
+    $doctor->update($data);
+    return redirect()->route('doctors.index');
+})->name('doctors.update');
+
+Route::post('/clinic/doctors',function(DoctorRequest $req){
+
+    $data = $req->validated();
+    Doctor::create($data);
+
+    return redirect()->route('doctors.index');
+})->name('doctors.store');
+
+Route::delete('clinic/doctors/{doctor}',function(Doctor $doctor){
+    $doctor->delete();
+    return redirect()->route('doctors.index');
+})->name('doctors.destroy');
+
+Route::view('clinic/doctors/create','doctors_form')->name('doctors.create');
+

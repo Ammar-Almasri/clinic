@@ -4,22 +4,38 @@
     <div class="card shadow-sm p-4">
         <h2 class="text-center text-primary mb-4">Available Doctors</h2>
 
-        @foreach ($doctors as $doctor)
+            @foreach ($doctors as $doctor)
             <div class="doctor-card mb-4 p-3">
-                <h4 class="mb-1">{{ $doctor->first_name }} {{ $doctor->last_name }}</h4>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">{{ $doctor->first_name }} {{ $doctor->last_name }}</h4>
+                    <div class="d-flex">
+                        <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
                 <p class="mb-1"><strong>Speciality:</strong> {{ $doctor->speciality }}</p>
                 <p class="mb-1"><strong>Email:</strong> {{ $doctor->email }}</p>
                 <p class="mb-0"><strong>Phone:</strong> {{ $doctor->phone }}</p>
             </div>
         @endforeach
 
+
         <div class="mt-4">
             {{ $doctors->links('pagination::bootstrap-4') }}
+        </div>
+
+        <div class="d-grid gap-2 mb-2">
+            <a href="{{ route('doctors.create') }}" class="btn btn-success btn-lg">Add New Doctor</a>
         </div>
 
         <div class="d-grid gap-2">
             <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
         </div>
+
 
     </div>
 @endsection
