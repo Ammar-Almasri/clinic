@@ -1,49 +1,61 @@
 @extends('layouts.app')
-{{print_r($errors->all())}}
 @section('content')
     <div class="card shadow-lg border-0 rounded-lg">
         <div class="card-body">
-            <h2 class="text-center text-primary mb-4">Book Appointment</h2>
+            <h2 class="text-center text-primary mb-4">
+                {{ isset($appointment) ? 'Update Appointment' : 'Book Appointment' }}
+            </h2>
+            <form action="{{ isset($appointment) ? route('appointments.update', $appointment->id) : route('appointments.store') }}"
+                method="POST">
+              @csrf
+              @if(isset($appointment))
+                  @method('PUT')
+              @endif
 
-            <form action="{{ route('appointments.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="patient_id" value="{{ $patient->id }}">
-                <div class="mb-4">
-                    <label for="doctor_id" class="form-label">Doctor</label>
-                    <select name="doctor_id" id="doctor_id" class="form-control form-control-lg" required>
-                        <option value="">-- Select Doctor --</option>
-                        @foreach ($doctors as $doctor)
-                            <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
-                                Dr. {{ $doctor->first_name }} ({{ $doctor->speciality }})
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('doctor_id')
-                        <div class="text-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
+              <input type="hidden" name="patient_id"
+                     value="{{ old('patient_id') ?? ($appointment->patient->id ?? $patient->id ?? '') }}">
 
+              <div class="mb-4">
+                  <label for="doctor_id" class="form-label">Doctor</label>
+                  <select name="doctor_id" id="doctor_id" class="form-control form-control-lg" required>
+                      <option value="">-- Select Doctor --</option>
+                      @foreach ($doctors as $doctor)
+                          <option value="{{ $doctor->id }}"
+                              {{ (old('doctor_id') ?? ($appointment->doctor_id ?? '')) == $doctor->id ? 'selected' : '' }}>
+                              Dr. {{ $doctor->first_name }} ({{ $doctor->speciality }})
+                          </option>
+                      @endforeach
+                  </select>
+                  @error('doctor_id')
+                      <div class="text-danger mt-2">{{ $message }}</div>
+                  @enderror
+              </div>
 
-                <div class="mb-4">
-                    <label for="appointment_date" class="form-label">Appointment Date</label>
-                    <input type="datetime-local" name="appointment_date" id="appointment_date" class="form-control form-control-lg" required>
-                    @error('appointment_date')
-                        <div class="text-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
+              <div class="mb-4">
+                  <label for="appointment_date" class="form-label">Appointment Date</label>
+                  <input type="datetime-local" name="appointment_date" id="appointment_date"
+                         class="form-control form-control-lg" required
+                         value="{{ old('appointment_date') ?? (isset($appointment) ? $appointment->appointment_date->format('Y-m-d\TH:i') : '') }}">
+                  @error('appointment_date')
+                      <div class="text-danger mt-2">{{ $message }}</div>
+                  @enderror
+              </div>
 
-                <div class="mb-4">
-                    <label for="reason" class="form-label">Reason</label>
-                    <textarea name="reason" id="reason" class="form-control form-control-lg" rows="4" placeholder="Describe the reason (optional)"></textarea>
-                    @error('reason')
-                        <div class="text-danger mt-2">{{ $message }}</div>
-                    @enderror
-                </div>
+              <div class="mb-4">
+                  <label for="reason" class="form-label">Reason</label>
+                  <textarea name="reason" id="reason" class="form-control form-control-lg" rows="4"
+                            placeholder="Describe the reason (optional)">{{ old('reason') ?? ($appointment->reason ?? '') }}</textarea>
+                  @error('reason')
+                      <div class="text-danger mt-2">{{ $message }}</div>
+                  @enderror
+              </div>
 
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-sm">Book Now</button>
-                </div>
-            </form>
+              <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary btn-sm">
+                      {{ isset($appointment) ? 'Update Appointment' : 'Book Now' }}
+                  </button>
+              </div>
+          </form>
         </div>
     </div>
 @endsection
@@ -140,9 +152,13 @@
         const input = document.getElementById('appointment_date');
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1); // Move to next day
-        tomorrow.setMinutes(tomorrow.getMinutes() - tomorrow.getTimezoneOffset()); // Adjust timezone
+        tomorrow.setHours(0, 0, 0, 0); // Set time to 00:00
 
-        input.min = tomorrow.toISOString().slice(0, 16);
+        // Adjust for timezone offset
+        const localISOTime = new Date(tomorrow.getTime() - (tomorrow.getTimezoneOffset() * 60000))
+                                .toISOString().slice(0, 16);
+
+        input.min = localISOTime;
     });
 </script>
 @endsection

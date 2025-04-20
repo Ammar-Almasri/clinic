@@ -65,4 +65,15 @@ Route::post('/clinic/appointments',function(AppointmentRequest $req){
     return redirect()->route('appointments.index');
 })->name('appointments.store');
 
+Route::get('/clinic/appointments/edit/{appointment}', function(Appointment $appointment){
 
+    return view('appointments_form',['doctors'=>Doctor::all(),'appointment' => $appointment]);
+})->name('appointments.edit');
+
+Route::put('/clinic/appointments',function(AppointmentRequest $req){
+
+    $data = $req->validated();
+    Appointment::create($data);
+
+    return redirect()->route('appointments.index');
+})->name('appointments.update');

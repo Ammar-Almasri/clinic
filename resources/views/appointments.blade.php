@@ -1,18 +1,23 @@
 @extends('layouts.app')
-
+{{-- {{ print_r($errors->all(), true) }} --}}
 @section('content')
     <div class="card shadow-sm p-4">
         <h2 class="text-center text-primary mb-4">Appointments</h2>
 
         @foreach ($appointments as $appointment)
-            <div class="appointment-card mb-4 p-3">
-                <h4 class="mb-1">Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</h4>
+            <div class="appointment-card mb-4 p-3 border rounded">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h4 class="mb-0">Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</h4>
+                    <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-sm btn-primary">Edit</a>
+                </div>
                 <p class="mb-1"><strong>Doctor:</strong> {{ $appointment->doctor->first_name }} {{ $appointment->doctor->last_name }}</p>
                 <p class="mb-1"><strong>Speciality:</strong> {{ $appointment->doctor->speciality }}</p>
                 <p class="mb-1"><strong>Appointment Date:</strong> {{ $appointment->appointment_date->format('Y-m-d H:i') }}</p>
                 <p class="mb-0"><strong>Reason:</strong> {{ $appointment->reason }}</p>
             </div>
         @endforeach
+
+
 
         <div class="mt-4">
             {{ $appointments->links('pagination::bootstrap-4') }}
