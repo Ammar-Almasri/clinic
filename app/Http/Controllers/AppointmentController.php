@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Appointment;
+use App\Models\Doctor;
+use App\Models\Patient;
+use App\Http\Requests\AppointmentRequest;
+
+class AppointmentController extends Controller
+{
+    public function index()
+    {
+        return view('appointments', ['appointments' => Appointment::latest()->paginate(3)]);
+    }
+
+    public function create(Patient $patient)
+    {
+        return view('appointments_form', [
+            'doctors' => Doctor::all(),
+            'patient' => $patient
+        ]);
+    }
+
+    public function store(AppointmentRequest $request)
+    {
+        $data = $request->validated();
+        Appointment::create($data);
+
+        return redirect()->route('appointments.index');
+    }
+
+    public function edit(Appointment $appointment)
+    {
+        return view('appointments_form', [
+            'doctors' => Doctor::all(),
+            'appointment' => $appointment
+        ]);
+    }
+
+    public function update(AppointmentRequest $request, Appointment $appointment)
+    {
+        $data = $request->validated();
+        $appointment->update($data);
+
+        return redirect()->route('appointments.index');
+    }
+
+    public function destroy(Appointment $appointment)
+    {
+        $appointment->delete();
+
+        return redirect()->route('appointments.index');
+    }
+}

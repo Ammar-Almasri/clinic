@@ -26,4 +26,10 @@ class Doctor extends Model
     {
         return $query->where('speciality', 'like', '%' . $speciality . '%');
     }
+
+    public function scopeHighestRated(Builder $query): Builder
+    {
+        return $query->withAvg('reviews','rating')
+        ->orderBy('reviews_avg_rating','desc');
+    }
 }
