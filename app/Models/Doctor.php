@@ -17,7 +17,13 @@ class Doctor extends Model
         return $this->hasMany(Appointment::class);
     }
 
-    public function scopeSpeciality(Builder $query, $speciality):Builder{
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function scopeSpeciality(Builder $query, $speciality):Builder
+    {
         return $query->where('speciality', 'like', '%' . $speciality . '%');
     }
 }
