@@ -1,100 +1,178 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card shadow-sm p-4">
-        <h2 class="text-center text-primary mb-4">Available Doctors</h2>
+    <!-- Container for the main content -->
+    <div class="container mt-5">
+        <!-- Search form for filtering by speciality -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="text-primary mb-4">Available Doctors</h2>
+                <form action="{{ route('doctors.index') }}" method="GET" class="d-flex justify-content-center">
+                    <input type="text" name="speciality" value="{{ request('speciality') }}" placeholder="Search by Specialty..." class="form-control w-50">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <!-- Clear Button -->
+                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary ms-2 d-flex align-items-center justify-content-center">Clear</a>
+                </form>
+            </div>
+        </div>
 
+
+        <!-- Doctors List -->
+        <div class="row">
             @foreach ($doctors as $doctor)
-            <div class="doctor-card mb-4 p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h4 class="mb-0">{{ $doctor->first_name }} {{ $doctor->last_name }}</h4>
-                    <div class="d-flex">
-                        <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-primary me-2">Edit</a>
-                        <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                <div class="col-md-4 mb-4">
+                    <!-- Doctor Card -->
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">{{ $doctor->first_name }} {{ $doctor->last_name }}</h5>
+                            <p class="card-text"><strong>Speciality:</strong> {{ $doctor->speciality }}</p>
+                            <p class="card-text"><strong>Email:</strong> {{ $doctor->email }}</p>
+                            <p class="card-text"><strong>Phone:</strong> {{ $doctor->phone }}</p>
+
+                            <!-- Rating and Review Info -->
+                            <div class="mt-2">
+                                @if ($doctor->reviews_count > 0)
+                                    <p><strong>Rating:</strong> {{ number_format($doctor->reviews_avg_rating, 1) }} ★</p>
+                                    <p><strong>Reviews:</strong> {{ $doctor->reviews_count }} {{ Str::plural('review', $doctor->reviews_count) }}</p>
+                                @else
+                                    <p class="text-muted">No reviews yet.</p>
+                                @endif
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p class="mb-1"><strong>Speciality:</strong> {{ $doctor->speciality }}</p>
-                <p class="mb-1"><strong>Email:</strong> {{ $doctor->email }}</p>
-                <p class="mb-0"><strong>Phone:</strong> {{ $doctor->phone }}</p>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
 
-
+        <!-- Pagination Links -->
         <div class="mt-4">
             {{ $doctors->links('pagination::bootstrap-4') }}
         </div>
 
-        <div class="d-grid gap-2 mb-2">
+        <!-- Add New Doctor Button -->
+        <div class="d-grid gap-2 mb-4">
             <a href="{{ route('doctors.create') }}" class="btn btn-success btn-lg">Add New Doctor</a>
         </div>
 
+        <!-- Back to Main Page Button -->
         <div class="d-grid gap-2">
             <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
         </div>
-
-
     </div>
 @endsection
 
 @section('styles')
     <style>
-
-        .pagination .page-link {
-            font-size: 1rem; /* Adjust the font size */
-            padding: 0.375rem 0.75rem; /* Adjust padding if necessary */
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
         }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
-            border-radius: 10px;
-            padding: 12px 20px;
-            font-size: 1rem;
-            transition: background-color 0.3s;
+        .btn-primary, .btn-secondary, .btn-success {
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
         }
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover {
+            background-color: #0056b3;
         }
 
-
-        .pagination .page-item.disabled .page-link,
-        .pagination .page-item.active .page-link {
-            background-color: #007bff;
-            border-color: #007bff;
+        .btn-warning {
+            background-color: #f39c12;
             color: white;
+            border-radius: 30px;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .card {
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Custom Pagination */
+        .pagination .page-link {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .pagination .page-item.active .page-link,
+        .pagination .page-item.disabled .page-link {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
         }
 
         .pagination .page-link {
-            display: inline-block;
-            color: #007bff; /* Customize the color */
+            color: #007bff;
             background-color: white;
             border: 1px solid #ddd;
         }
 
         .pagination .page-link:hover {
-            background-color: #f1f1f1; /* Hover effect */
+            background-color: #f1f1f1;
         }
 
-        .pagination .page-item .page-link {
-            padding: 8px 16px; /* Adjust padding for the arrows */
+        /* Search Form Styling */
+        .form-control {
+            border-radius: 30px;
+            padding: 10px 15px;
+            box-shadow: none;
+            border: 1px solid #ddd;
         }
 
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
+
+        .container {
+            max-width: 1200px;
+        }
 
         .doctor-card {
             background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
+            border-radius: 15px;
+            border: 1px solid #e2e6ea;
         }
 
         .doctor-card:hover {
             background-color: #e9f5ff;
             border-color: #007bff;
+        }
+
+        .doctor-rating {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .doctor-card {
+                margin-bottom: 15px;
+            }
         }
     </style>
 @endsection

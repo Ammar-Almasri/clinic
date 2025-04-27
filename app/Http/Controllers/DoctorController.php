@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Http\Requests\DoctorRequest;
+use Illuminate\Http\Request;
 
 class DoctorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('doctors', ['doctors' => Doctor::latest()->paginate(3)]);
+        $speciality = $request->input('speciality');
+        $doctors = Doctor::when($speciality, function($query, $speciality) {
+            return $query->speciality($speciality);
+        })
+        ->popular()
+        ->highestRated()
+        ->latest() // Apply the latest method before pagination
+        ->paginate(3); // Paginate the results
+        return view('doctors', ['doctors' => $doctors]);
     }
 
     public function create()

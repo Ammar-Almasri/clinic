@@ -1,122 +1,151 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f1f6f9;">
-    <div class="card shadow-lg border-0 rounded-lg w-100" style="max-width: 900px; height: auto; overflow-y: auto;">
-        <div class="card-body p-4">
-            <h2 class="text-center text-primary mb-4">Patient Details</h2>
+    <div class="container mt-5">
+        <!-- Search form for filtering by patient name -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="text-primary mb-4">Patients</h2>
+                <form action="{{ route('patients.index') }}" method="GET" class="d-flex justify-content-center">
+                    <input type="text" name="patient_name" value="{{ request('patient_name') }}" placeholder="Search by Patient Name..." class="form-control w-50">
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    <!-- Clear Button -->
+                    <a href="{{ route('patients.index') }}" class="btn btn-secondary ms-2 d-flex align-items-center justify-content-center">Clear</a>
+                </form>
+            </div>
+        </div>
 
+        <!-- Patients List in Grid -->
+        <div class="row">
             @foreach ($patients as $patient)
-                <div class="patient-card mb-4 p-3 d-flex justify-content-between align-items-center">
-                    <div>
-                        <h4 class="mb-1">{{ $patient->first_name }} {{ $patient->last_name }}</h4>
-                        <p class="mb-1"><strong>Email:</strong> {{ $patient->email }}</p>
-                        <p class="mb-1"><strong>Phone:</strong> {{ $patient->phone }}</p>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-primary ms-2">Edit</a>
-                        <form action="{{ route('patients.destroy', $patient) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this patient?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger ms-2">Delete</button>
-                        </form>
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">{{ $patient->first_name }} {{ $patient->last_name }}</h5>
+                            <p class="card-text"><strong>Email:</strong> {{ $patient->email }}</p>
+                            <p class="card-text"><strong>Phone:</strong> {{ $patient->phone }}</p>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('patients.destroy', $patient) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this patient?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             @endforeach
+        </div>
+
+        <!-- Pagination Links -->
+        <div class="mt-4">
+            {{ $patients->links('pagination::bootstrap-4') }}
+        </div>
 
 
-
-            <div class="mt-4">
-                {{ $patients->links('pagination::bootstrap-4') }}
-            </div>
-
-            <div class="d-grid gap-2">
-                <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
-            </div>
-
+        <!-- Back to Main Page Button -->
+        <div class="d-grid gap-2">
+            <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
         </div>
     </div>
-</div>
 @endsection
 
 @section('styles')
-<style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        background-color: #f1f6f9;
-        font-family: 'Poppins', sans-serif;
-    }
+    <style>
+        /* General Styling */
+        .btn-primary, .btn-secondary, .btn-success {
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
 
-    .patient-card {
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 10px;
-    }
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover {
+            background-color: #0056b3;
+        }
 
-    .container {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin: 0 auto;
-    }
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+            border-radius: 30px;
+        }
 
-    .patient-card:hover {
-        background-color: #e9f5ff;
-        border-color: #007bff;
-    }
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
 
-    .pagination .page-link {
-        font-size: 1rem;
-        padding: 0.375rem 0.75rem;
-        display: inline-block;
-        color: #007bff;
-        background-color: white;
-        border: 1px solid #ddd;
-    }
+        .card {
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .container {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin: 0 auto;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-    .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
-        border-radius: 10px;
-        padding: 12px 20px;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-    }
+        /* Custom Pagination */
+        .pagination .page-link {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
 
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
-    }
+        .pagination .page-item.active .page-link,
+        .pagination .page-item.disabled .page-link {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
 
+        .pagination .page-link {
+            color: #007bff;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
 
-    .pagination .page-item.disabled .page-link,
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: white;
-    }
+        .pagination .page-link:hover {
+            background-color: #f1f1f1;
+        }
 
-    .pagination .page-link:hover {
-        background-color: #f1f1f1;
-    }
+        /* Search Form Styling */
+        .form-control {
+            border-radius: 30px;
+            padding: 10px 15px;
+            box-shadow: none;
+            border: 1px solid #ddd;
+        }
 
-    .card {
-        max-height: 90vh; /* Control height */
-        overflow-y: auto;
-        animation: fadeIn 0.8s ease-in-out;
-    }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+        }
 
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(20px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
+        .container {
+            max-width: 1200px;
+        }
 
-</style>
+        .appointment-card {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #e2e6ea;
+        }
+
+        .appointment-card:hover {
+            background-color: #e9f5ff;
+            border-color: #007bff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .appointment-card {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
 @endsection

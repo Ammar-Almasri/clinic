@@ -5,12 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Http\Requests\PatientRequest;
 use App\Models\Doctor;
+use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('patients', ['patients' => Patient::latest()->paginate(3)]);
+        $name = $request->input('patient_name');
+        $patients = Patient::when($name, function($query,$name){
+            return $query->name($name);
+        })
+        ->latest()
+        ->paginate(6);
+
+        return view('patients', ['patients' => $patients]);
     }
 
     public function create()

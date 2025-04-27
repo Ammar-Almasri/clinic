@@ -6,12 +6,20 @@ use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Http\Requests\AppointmentRequest;
+use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('appointments', ['appointments' => Appointment::latest()->paginate(3)]);
+        $name = $request->input('patient_name');
+        $appointments = Appointment::when($name, function($query,$name){
+            return $query->name($name);
+        })
+        ->latest()
+        ->paginate(6);
+
+        return view('appointments', ['appointments' => $appointments]);
     }
 
     public function create(Patient $patient)

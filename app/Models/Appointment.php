@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,5 +26,13 @@ class Appointment extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function scopeName(Builder $query, $name): Builder
+    {
+        return $query->whereHas('patient', function($query) use ($name) {
+            $query->where('first_name', 'like', '%' . $name . '%')
+                  ->orWhere('last_name', 'like', '%' . $name . '%');
+        });
     }
 }
