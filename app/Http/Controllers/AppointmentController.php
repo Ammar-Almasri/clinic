@@ -19,12 +19,12 @@ class AppointmentController extends Controller
         ->latest()
         ->paginate(6);
 
-        return view('appointments', ['appointments' => $appointments]);
+        return view('appointments.index', ['appointments' => $appointments]);
     }
 
     public function create(Patient $patient)
     {
-        return view('appointments_form', [
+        return view('appointments.appointments_form', [
             'doctors' => Doctor::all(),
             'patient' => $patient
         ]);
@@ -40,7 +40,7 @@ class AppointmentController extends Controller
 
     public function edit(Appointment $appointment)
     {
-        return view('appointments_form', [
+        return view('appointments.appointments_form', [
             'doctors' => Doctor::all(),
             'appointment' => $appointment
         ]);

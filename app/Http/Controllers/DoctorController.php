@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
@@ -10,7 +9,7 @@ class DoctorController extends Controller
 {
     public function index(Request $request)
     {
-        $speciality = $request->input('speciality');
+        $speciality = $request->input('doctor_speciality');
         $doctors = Doctor::when($speciality, function($query, $speciality) {
             return $query->speciality($speciality);
         })
@@ -18,12 +17,12 @@ class DoctorController extends Controller
         ->highestRated()
         ->latest() // Apply the latest method before pagination
         ->paginate(3); // Paginate the results
-        return view('doctors', ['doctors' => $doctors]);
+        return view('doctors.index', ['doctors' => $doctors]); // Changed view path to doctors.index
     }
 
     public function create()
     {
-        return view('doctors_form');
+        return view('doctors.doctors_form'); // Changed view path to doctors.create
     }
 
     public function store(DoctorRequest $request)
@@ -36,7 +35,7 @@ class DoctorController extends Controller
 
     public function edit(Doctor $doctor)
     {
-        return view('doctors_form', ['doctor' => $doctor]);
+        return view('doctors.doctors_form', ['doctor' => $doctor]); // Changed view path to doctors.edit
     }
 
     public function update(DoctorRequest $request, Doctor $doctor)
@@ -52,5 +51,10 @@ class DoctorController extends Controller
         $doctor->delete();
 
         return redirect()->route('doctors.index');
+    }
+
+    public function show(Doctor $doctor)
+    {
+        return view('doctors.show', ['doctor' => $doctor]); // No change here, this already refers to doctors.show
     }
 }

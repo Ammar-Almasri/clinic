@@ -33,6 +33,7 @@ Route::get('/clinic', function () {
 
 Route::get('/clinic/doctors', [DoctorController::class, 'index'])->name('doctors.index');
 Route::get('/clinic/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
+Route::get('/clinic/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
 Route::post('/clinic/doctors', [DoctorController::class, 'store'])->name('doctors.store');
 Route::get('/clinic/doctors/edit/{doctor}', [DoctorController::class, 'edit'])->name('doctors.edit');
 Route::put('/clinic/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
