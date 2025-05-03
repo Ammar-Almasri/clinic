@@ -3,6 +3,7 @@
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Requests\AppointmentRequest;
 use App\Http\Requests\DoctorRequest;
 use App\Http\Requests\PatientRequest;
@@ -52,3 +53,5 @@ Route::post('/clinic/appointments', [AppointmentController::class, 'store'])->na
 Route::get('/clinic/appointments/edit/{appointment}', [AppointmentController::class, 'edit'])->name('appointments.edit');
 Route::put('/clinic/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
 Route::delete('/clinic/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+Route::resource('doctors.reviews',ReviewController::class)->scoped(['review' => 'doctor'])->only(['create','store']);

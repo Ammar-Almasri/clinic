@@ -18,7 +18,6 @@
                     alt="Doctor Image"
                     class="rounded-circle shadow"
                     style="width: 150px; height: 150px; object-fit: cover;">
-
             </div>
 
             <h1 class="card-title mb-4">{{ $doctor->first_name }} {{ $doctor->last_name }}</h1>
@@ -37,6 +36,13 @@
                 <i class="bi bi-heart-pulse-fill me-2 text-danger"></i>
                 <strong>Speciality:</strong> {{ $doctor->speciality }}
             </div>
+
+            {{-- Add Review Button --}}
+            <div class="mt-4">
+                <a href="{{ route('doctors.reviews.create', $doctor) }}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-1"></i> Add Review
+                </a>
+            </div>
         </div>
     </div>
 
@@ -49,7 +55,7 @@
                     @foreach($doctor->reviews as $review)
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
-                                <strong>{{ $review->patient_name }}</strong>
+                                <strong>{{ $review->patient->first_name }}</strong>
                                 <div>
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= $review->rating)

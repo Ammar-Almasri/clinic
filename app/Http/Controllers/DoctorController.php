@@ -55,6 +55,7 @@ class DoctorController extends Controller
 
     public function show(Doctor $doctor)
     {
+        $doctor = $doctor->load(['reviews' => fn($query) => $query->latest()]);
         return view('doctors.show', ['doctor' => $doctor]); // No change here, this already refers to doctors.show
     }
 }
