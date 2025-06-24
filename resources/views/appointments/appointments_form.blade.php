@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.bootstrap')
 @section('content')
     <div class="card shadow-lg border-0 rounded-lg">
         <div class="card-body">
