@@ -17,7 +17,7 @@ class DoctorRequest extends FormRequest
             'first_name' => 'required|string|max:255',
             'last_name'  => 'required|string|max:255',
             'email'      => 'required|email|unique:doctors,email,' . ($this->doctor->id ?? null),
-            'phone'      => 'required|string|max:20',
+            'phone'      => 'required|string|unique:doctors,phone|max:20' . ($this->doctor->id ?? null),
             'speciality' => 'required|string|max:255',
         ];
     }

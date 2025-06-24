@@ -48,6 +48,8 @@ Route::put('/clinic/patients/{patient}', [PatientController::class, 'update'])->
 Route::delete('/clinic/patients/{patient}', [PatientController::class, 'destroy'])->name('patients.destroy');
 
 Route::get('/clinic/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+Route::get('/clinic/appointments/choose-patient', [AppointmentController::class, 'choosePatient'])->name('appointments.choosePatient');
+Route::get('/clinic/appointments/select-patient', [AppointmentController::class, 'selectRegisteredPatient'])->name('appointments.selectRegisteredPatient');
 Route::get('/clinic/appointments/create/{patient}', [AppointmentController::class, 'create'])->name('appointments.create');
 Route::post('/clinic/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 Route::get('/clinic/appointments/edit/{appointment}', [AppointmentController::class, 'edit'])->name('appointments.edit');

@@ -22,9 +22,10 @@
             background: #ffffff;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
         }
 
-        h1 {
+        h2 {
             font-size: 36px;
             font-weight: 700;
             color: #333;
@@ -34,7 +35,7 @@
             transition: color 0.3s;
         }
 
-        h1:hover {
+        h2:hover {
             color: #4f46e5;
         }
 
@@ -81,11 +82,6 @@
             }
         }
 
-        /* Adding subtle animation on the container */
-        .container {
-            animation: fadeIn 0.8s ease-in-out;
-        }
-
         /* Keyframe for fade-in effect */
         @keyframes fadeIn {
             0% {
@@ -102,12 +98,14 @@
 
 @section('content')
     <div class="container">
-        <h1>@yield('title', 'Ammar Clinic Dashboard')</h1>
+        <h2>Choose Patient Type</h2>
         <div class="dashboard-grid">
-            <a href="{{ route('doctors.index') }}" class="dashboard-button">👨‍⚕️ View Doctors</a>
-            <a href="{{ route('patients.index') }}" class="dashboard-button">😷 View Patients</a>
-            <a href="{{ route('appointments.choosePatient') }}" class="dashboard-button">📅 Book Appointment</a>
-            <a href="{{ route('appointments.index') }}" class="dashboard-button">🧾 View Appointments</a>
+            <a href="{{ route('patients.create') }}" class="dashboard-button">
+                🆕 New Patient
+            </a>
+            <a href="{{ route('appointments.selectRegisteredPatient') }}" class="dashboard-button">
+                👤 Registered Patient
+            </a>
         </div>
     </div>
 @endsection

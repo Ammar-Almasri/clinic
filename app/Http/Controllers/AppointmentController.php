@@ -60,4 +60,23 @@ class AppointmentController extends Controller
 
         return redirect()->route('appointments.index');
     }
+
+    public function choosePatient()
+    {
+        return view('appointments.choose_patient');
+    }
+
+    public function selectRegisteredPatient(Request $request)
+    {
+        $name = $request->input('patient_name');
+        $patients = Patient::when($name, function($query, $name) {
+            return $query->name($name);
+        })
+        ->latest()
+        ->paginate(6);
+
+        // Modify the view reference to point to 'patients.index'
+        return view('appointments.select_registered_patient', compact('patients'));
+    }
+
 }
