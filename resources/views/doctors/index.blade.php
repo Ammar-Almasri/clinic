@@ -39,14 +39,19 @@
                     </a>
 
                     <!-- Action Buttons -->
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
-                    </div>
+                    @auth
+                        @if (auth()->user()->role === 'admin')
+                            <!-- Action Buttons -->
+                            <div class="d-flex justify-content-between mt-3">
+                                <a href="{{ route('doctors.edit', $doctor) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="{{ route('doctors.destroy', $doctor) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this doctor?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        @endif
+                    @endauth
                 </div>
             </div>
         @endforeach
@@ -58,14 +63,23 @@
         {{ $doctors->links('pagination::bootstrap-4') }}
     </div>
 
-    <!-- Add New Doctor Button -->
-    <div class="d-grid gap-2 mb-4">
-        <a href="{{ route('doctors.create') }}" class="btn btn-success btn-lg">Add New Doctor</a>
-    </div>
-    <!-- Back to Main Page Button -->
-    <div class="d-grid gap-2">
-        <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
-    </div>
+    @auth
+        @if (auth()->user()->role === 'admin')
+            <!-- Add New Doctor Button -->
+            <div class="d-grid gap-2 mb-4">
+                <a href="{{ route('doctors.create') }}" class="btn btn-success btn-lg">Add New Doctor</a>
+            </div>
+            <!-- Back to Main Page Button -->
+            <div class="d-grid gap-2">
+                <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
+            </div>
+        @else
+            <!-- Back to Main Page Button -->
+            <div class="d-grid gap-2">
+                <a href="{{ route('user.dashboard') }}" class="btn btn-secondary btn-lg">Main Page</a>
+            </div>
+        @endif
+    @endauth
 </div>
 @endsection
 

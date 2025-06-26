@@ -24,6 +24,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
 // 🔄 Home redirects to admin dashboard
 Route::middleware(['auth', 'is_admin'])->prefix('clinic')->group(function () {
     Route::get('/', function () {
@@ -31,9 +33,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('clinic')->group(function () {
     })->name('clinic.index');
 
     // Doctors
-    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-    Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
     Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
     Route::get('/doctors/edit/{doctor}', [DoctorController::class, 'edit'])->name('doctors.edit');
     Route::put('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
