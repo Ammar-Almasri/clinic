@@ -24,7 +24,6 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-
 // 🔄 Home redirects to admin dashboard
 Route::middleware(['auth', 'is_admin'])->prefix('clinic')->group(function () {
     Route::get('/', function () {
