@@ -12,15 +12,20 @@
                     @endisset
                 </h2>
 
+                @php $isAdmin = auth()->user()?->role === 'admin'; @endphp
+
                 <form
-                    action="{{ isset($patient) ? route('patients.update', $patient->id) : route('patients.store') }}"
-                    method="POST">
+                        action="{{ isset($patient)
+                            ? route('patients.update', $patient->id)
+                            : ($isAdmin ? route('patients.store') : route('user.patients.store')) }}"
+                        method="POST">
 
                     @csrf
                     @isset($patient)
                         @method('PUT')
                     @endisset
 
+<!-- Always show First Name and Last Name -->
                     <div class="mb-4">
                         <label for="first_name" class="form-label fs-5 text-secondary">First Name</label>
                         <input type="text" name="first_name" id="first_name" class="form-control form-control-lg"
@@ -39,23 +44,27 @@
                         @enderror
                     </div>
 
-                    <div class="mb-4">
-                        <label for="email" class="form-label fs-5 text-secondary">Email</label>
-                        <input type="email" name="email" id="email" class="form-control form-control-lg"
-                            placeholder="Enter email" required value="{{ old('email', isset($patient) ? $patient->email : '') }}">
-                        @error('email')
-                            <div class="text-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @if($isAdmin)
+                        <!-- Show these only for admin -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label fs-5 text-secondary">Email</label>
+                            <input type="email" name="email" id="email" class="form-control form-control-lg"
+                                placeholder="Enter email" required value="{{ old('email', isset($patient) ? $patient->email : '') }}">
+                            @if ($errors->has('email'))
+                                <div class="text-danger mt-2">{{ $errors->first('email') }}</div>
+                            @endif
+                        </div>
 
-                    <div class="mb-4">
-                        <label for="phone" class="form-label fs-5 text-secondary">Phone</label>
-                        <input type="text" name="phone" id="phone" class="form-control form-control-lg"
-                            placeholder="Enter phone number" required value="{{ old('phone', isset($patient) ? $patient->phone : '') }}">
-                        @error('phone')
-                            <div class="text-danger mt-2">{{ $message }}</div>
-                        @enderror
-                    </div>
+                        <div class="mb-4">
+                            <label for="phone" class="form-label fs-5 text-secondary">Phone</label>
+                            <input type="text" name="phone" id="phone" class="form-control form-control-lg"
+                                placeholder="Enter phone number" required value="{{ old('phone', isset($patient) ? $patient->phone : '') }}">
+                            @if ($errors->has('phone'))
+                                <div class="text-danger mt-2">{{ $errors->first('phone') }}</div>
+                            @endif
+                        </div>
+                    @endif
+
 
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary btn-lg rounded-pill">

@@ -100,10 +100,15 @@
     <div class="container">
         <h2>Choose Patient Type</h2>
         <div class="dashboard-grid">
-            <a href="{{ route('patients.create') }}" class="dashboard-button">
+            @php
+                $isAdmin = auth()->user()?->role === 'admin';
+            @endphp
+
+            <a href="{{ $isAdmin ? route('patients.create') : route('user.patients.create') }}" class="dashboard-button">
                 🆕 New Patient
             </a>
-            <a href="{{ route('appointments.selectRegisteredPatient') }}" class="dashboard-button">
+
+            <a href="{{ $isAdmin ? route('appointments.selectRegisteredPatient') : route('appointments.selectUserRegisteredPatient') }}" class="dashboard-button">
                 👤 Registered Patient
             </a>
         </div>

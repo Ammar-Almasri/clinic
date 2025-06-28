@@ -100,15 +100,16 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Patient Dashboard
+            Ammar Clinic Dashboard
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="dashboard-grid">
             <a href="{{ route('doctors.index') }}" class="dashboard-button">👨‍⚕️ View Doctors</a>
+            <a href="{{ route('patients.index') }}" class="dashboard-button">😷 View Patients</a>
             <a href="{{ route('appointments.choosePatient') }}" class="dashboard-button">📅 Book Appointment</a>
-            <a href="{{ route('user.appointments.view') }}" class="dashboard-button">🗓️ My Appointments</a>
+            <a href="{{ route('appointments.index') }}" class="dashboard-button">🧾 View Appointments</a>
         </div>
     </div>
 </x-app-layout>

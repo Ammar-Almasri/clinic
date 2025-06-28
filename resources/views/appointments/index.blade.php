@@ -28,14 +28,16 @@
                             <p class="card-text"><strong>Reason:</strong> {{ $appointment->reason }}</p>
 
                             <!-- Action Buttons -->
-                            <div class="d-flex justify-content-between mt-3">
-                                <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                </form>
-                            </div>
+                            @if(auth()->user()?->role === 'admin')
+                                <div class="d-flex justify-content-between mt-3">
+                                    <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -48,8 +50,13 @@
         </div>
 
         <!-- Back to Main Page Button -->
+        @php
+            $isAdmin = auth()->user()?->role === 'admin';
+        @endphp
         <div class="d-grid gap-2">
-            <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
+            <a href="{{ $isAdmin ? route('clinic.index') : route('user.dashboard') }}" class="btn btn-secondary btn-lg">
+                Main Page
+            </a>
         </div>
     </div>
 @endsection

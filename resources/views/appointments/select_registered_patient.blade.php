@@ -43,8 +43,13 @@
         </div>
 
         <!-- Back Button -->
-        <div class="d-grid gap-2 mt-4">
-            <a href="{{ route('clinic.index') }}" class="btn btn-secondary btn-lg">Main Page</a>
+        @php
+            $isAdmin = auth()->user()?->role === 'admin';
+        @endphp
+        <div class="d-grid gap-2">
+            <a href="{{ $isAdmin ? route('clinic.index') : route('user.dashboard') }}" class="btn btn-secondary btn-lg">
+                Main Page
+            </a>
         </div>
     </div>
 @endsection

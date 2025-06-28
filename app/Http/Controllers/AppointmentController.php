@@ -35,7 +35,10 @@ class AppointmentController extends Controller
         $data = $request->validated();
         Appointment::create($data);
 
-        return redirect()->route('appointments.index');
+        if(auth()->user()->role === 'admin')
+            return redirect()->route('appointments.index');
+
+        return redirect()->route('user.appointments.view');
     }
 
     public function edit(Appointment $appointment)
@@ -78,5 +81,34 @@ class AppointmentController extends Controller
         // Modify the view reference to point to 'patients.index'
         return view('appointments.select_registered_patient', compact('patients'));
     }
+
+    public function selectUserRegisteredPatient(Request $request)
+    {
+        $name = $request->input('patient_name');
+
+        $patients = Patient::where('email', auth()->user()->email)
+            ->when($name, function ($query, $name) {
+                return $query->name($name);
+            })
+            ->latest()
+            ->paginate(6);
+
+        return view('appointments.select_registered_patient', compact('patients'));
+    }
+
+    public function viewUserAppointments()
+    {
+        $userEmail = auth()->user()->email;
+
+        $appointments = Appointment::whereHas('patient', function ($query) use ($userEmail) {
+            $query->where('email', $userEmail);
+        })
+        ->with(['doctor', 'patient'])
+        ->latest()
+        ->paginate(6);
+
+        return view('appointments.index', compact('appointments'));
+    }
+
 
 }

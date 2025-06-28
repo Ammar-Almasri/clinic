@@ -54,4 +54,35 @@ class PatientController extends Controller
 
         return redirect()->route('patients.index');
     }
+
+    // Show only the current user's patients
+    public function userIndex()
+    {
+        $patients = Patient::where('user_id', auth()->id())->latest()->paginate(6);
+        return view('patients.index', compact('patients'));
+    }
+
+    // Show patient creation form
+    public function userCreate()
+    {
+        return view('patients.patients_form');
+    }
+
+    // Store a new patient linked to the current user
+    public function userStore(PatientRequest $request)
+    {
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+
+        if (auth()->user()->role !== 'admin') {
+            $data['email'] = auth()->user()->email;
+            $data['phone'] = auth()->user()->phone;
+        }
+
+        $patient = Patient::create($data);
+
+        return redirect()->route('user.appointments.create', ['patient' => $patient]);
+    }
+
+
 }
