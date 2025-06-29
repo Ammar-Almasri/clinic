@@ -70,6 +70,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('clinic')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     // User patients
     Route::get('/patients', [PatientController::class, 'userIndex'])->name('user.patients.index');
     Route::get('/patients/create', [PatientController::class, 'userCreate'])->name('user.patients.create');
