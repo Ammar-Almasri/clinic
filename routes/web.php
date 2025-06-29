@@ -28,7 +28,6 @@ Route::get('/', function () {
 });
 
 // 🔓 Publicly visible routes
-Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
 
 // 🧑‍⚕️ Admin routes
@@ -36,6 +35,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('clinic')->group(function () {
     Route::get('/', fn() => view('clinic/index'))->name('clinic.index');
 
     // Doctors CRUD
+    Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
     Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
     Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
     Route::get('/doctors/edit/{doctor}', [DoctorController::class, 'edit'])->name('doctors.edit');
