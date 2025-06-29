@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
     // Create appointment (user selects themselves or hidden patient ID is used)
     Route::get('/appointments/choose-patient', [AppointmentController::class, 'choosePatient'])->name('appointments.choosePatient');
     Route::get('/appointments/select-patient', [AppointmentController::class, 'selectUserRegisteredPatient'])->name('appointments.selectUserRegisteredPatient');
-    Route::get('/appointments/create/{patient}', [AppointmentController::class, 'create'])->name('user.appointments.create');
+    Route::get('/appointments/create/{patient}', [AppointmentController::class, 'create'])->name('appointments.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 
     // View only their own appointments
