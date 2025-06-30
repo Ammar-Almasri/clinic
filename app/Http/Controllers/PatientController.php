@@ -81,7 +81,7 @@ class PatientController extends Controller
 
         $patient = Patient::create($data);
 
-        return redirect()->route('user.appointments.create', ['patient' => $patient]);
+        return redirect()->route('appointments.create', ['patient' => $patient]);
     }
 
 

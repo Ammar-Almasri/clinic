@@ -109,6 +109,8 @@
             <a href="{{ route('doctors.index') }}" class="dashboard-button">👨‍⚕️ View Doctors</a>
             <a href="{{ route('appointments.choosePatient') }}" class="dashboard-button">📅 Book Appointment</a>
             <a href="{{ route('user.appointments.view') }}" class="dashboard-button">🗓️ My Appointments</a>
+            <a href="{{ route('appointments.selectUserRegisteredPatient') }}" class="dashboard-button">🤒 My Patients</a>
+
         </div>
     </div>
 </x-app-layout>
